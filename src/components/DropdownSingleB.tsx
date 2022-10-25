@@ -15,6 +15,7 @@ const useDropdownSingleB = (props: DropdownProps, ref: React.Ref<HTMLButtonEleme
     if (touched) {
       activeOption && selectOptionCallback({} as any, activeOption);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ activeOption, selectOptionCallback ]);
 
   const defaultOnKeyDown = state.button.onKeyDown;
