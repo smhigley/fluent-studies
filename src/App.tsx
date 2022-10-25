@@ -1,24 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Button, Text } from '@fluentui/react-components';
+import { FormA } from './FormA';
+import { FormB } from './FormB';
 import './App.css';
 
 function App() {
+  const [showForm, setShowForm] = React.useState<'a' | 'b'>();
+  const [formAComplete, setFormAComplete] = React.useState(false);
+  const [formBComplete, setFormBComplete] = React.useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: '2em' }}>
+      {!showForm ?
+        <div>
+          <Text size={800} as="h1">Fluent & Fable usability study</Text>
+          <p><Button onClick={() => setShowForm('a')}>Jump to Lunch Form</Button></p>
+          <p><Button onClick={() => setShowForm('b')}>Jump to Dinner Form</Button></p>
+        </div>
+      : null}
+      {showForm === 'a' ? 
+        <FormA showNextForm={!formBComplete} onFormSubmit={() => {
+          setFormAComplete(true);
+          setShowForm(formBComplete ? undefined : 'b');
+        }}></FormA>
+      : null}
+      {showForm === 'b' ? 
+        <FormB showNextForm={!formAComplete} onFormSubmit={() => {
+          setFormBComplete(true);
+          setShowForm(formAComplete ? undefined : 'a');
+        }}></FormB>
+      : null}
     </div>
   );
 }

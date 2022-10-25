@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { FluentProvider, webLightTheme } from '@fluentui/react-components';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -8,9 +9,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <FluentProvider theme={webLightTheme}>
     <App />
-  </React.StrictMode>
+  </FluentProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
