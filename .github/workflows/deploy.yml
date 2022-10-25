@@ -1,0 +1,29 @@
+name: Deploy to github pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: React build
+    runs-on: ubuntu-latest
+    steps:
+      # checkout files and set up node version
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: npm
+
+      # build slides app
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
