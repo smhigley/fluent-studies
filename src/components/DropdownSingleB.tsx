@@ -9,14 +9,13 @@ const useDropdownSingleB = (props: DropdownProps, ref: React.Ref<HTMLButtonEleme
   const { activeOption, getCount, getIndexOfId, getOptionAtIndex, getOptionsMatchingValue, open, selectOption, selectedOptions, setOpen } = state;
 
   const [touched, setTouched] = React.useState(false);
-  const selectOptionCallback = React.useCallback(selectOption, []);
 
   React.useEffect(() => {
     if (touched) {
-      activeOption && selectOptionCallback({} as any, activeOption);
+      activeOption && selectOption({} as any, activeOption);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ activeOption, selectOptionCallback ]);
+  }, [ activeOption ]);
 
   const defaultOnKeyDown = state.button.onKeyDown;
 

@@ -52,6 +52,7 @@ const useComboboxMultiB = (props: ComboboxProps, ref: React.Ref<HTMLInputElement
     else {
       setValue(undefined);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // clear input value after selecting an option

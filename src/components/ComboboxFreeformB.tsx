@@ -75,7 +75,6 @@ const useComboboxFreeformB = (props: ComboboxProps, ref: React.Ref<HTMLInputElem
       customOptionStyles.root,
       !customSearch.trim() && customOptionStyles.hidden
     );
-    const option = getOptionAtIndex(0);
     state.listbox.children = (
       <>
         <Option id={customOptionId} value={customSearch} className={optionClassName} checkIcon={{ className: customOptionStyles.check }}>Select '{customSearch}'</Option>
