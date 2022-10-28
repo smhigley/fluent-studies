@@ -116,7 +116,7 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <Combobox id="cuisine" multiselect freeform onOptionSelect={(ev, data) => {
+          <Combobox id="cuisine" multiselect onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>
@@ -134,7 +134,7 @@ export function FormA(props: FormAProps) {
             <Option>South Asian</Option>
           </Combobox>
           {submitted && !cuisineValid ?
-            <div className={styles.error} role="alert" id="cuisine-error">Please choose Chinese, French, and South Asian as cuisines.</div>
+            <div className={styles.error} role="alert" id="cuisine-error">Please choose Chinese, and two other cuisines.</div>
           : null}
         </div>
 
@@ -153,7 +153,7 @@ export function FormA(props: FormAProps) {
             <Option>Chicken</Option>
           </Combobox>
           {submitted && !ingredientValid ?
-            <div className={styles.error} role="alert" id="ingredient-error">Please add "Chicken" as the desired ingredient.</div>
+            <div className={styles.error} role="alert" id="ingredient-error">Please enter "Tofu" as the desired ingredient.</div>
           : null}
         </div>
 

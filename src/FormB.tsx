@@ -120,7 +120,7 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <ComboboxMultiB id="cuisine" multiselect freeform onOptionSelect={(ev, data) => {
+          <ComboboxMultiB id="cuisine" multiselect onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>

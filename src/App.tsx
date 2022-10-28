@@ -4,10 +4,31 @@ import { FormA } from './FormA';
 import { FormB } from './FormB';
 import './App.css';
 
+const getFormFromURL = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const form = urlParams.get('form');
+
+  return form === 'lunch' ? 'a' : form === 'dinner' ? 'b' : undefined;
+} 
+
 function App() {
   const [showForm, setShowForm] = React.useState<'a' | 'b'>();
   const [formAComplete, setFormAComplete] = React.useState(false);
   const [formBComplete, setFormBComplete] = React.useState(false);
+
+  // set form from URL on first load
+  React.useEffect(() => {
+    const form = getFormFromURL();
+    if (form) {
+      setShowForm(form);
+    }
+  }, []);
+
   return (
     <div style={{ padding: '2em' }}>
       {!showForm ?
