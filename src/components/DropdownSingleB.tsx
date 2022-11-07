@@ -64,6 +64,9 @@ const useDropdownSingleB = (props: DropdownProps, ref: React.Ref<HTMLButtonEleme
     // run the original function
     defaultOnKeyDown?.(event);
 
+    // clear timeout, if it exists
+    clearKeyTimeout();
+
     // check if the pressed keys are an "open" key combo
     const { altKey, ctrlKey, key, metaKey } = event;
     const shouldOpen = key === ' ' || key === 'Enter' || (altKey && key === 'ArrowDown') || (altKey && key === 'ArrowUp');
