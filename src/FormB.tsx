@@ -69,7 +69,7 @@ export function FormB(props: FormBProps) {
 
   const validateCuisine = (value: string[]) => {
     const requiredValue = 'South Asian';
-    if (value.length !== 2) {
+    if (value.length < 2) {
       setCuisineValid(false);
       return false;
     }
@@ -212,7 +212,7 @@ export function FormB(props: FormBProps) {
             <OptionMultiB>Gluten-free</OptionMultiB>
           </DropdownMultiB>
           {submitted && !dietaryValid ?
-            <div className={styles.error} role="alert" id="dietary-error">Please add "Low cholesterol" as a dietary concern.</div>
+            <div className={styles.error} role="alert" id="dietary-error">Please add "Low cholesterol" and one other option as a dietary concern.</div>
           : null}
         </div>
 

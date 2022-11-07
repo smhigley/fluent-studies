@@ -65,7 +65,7 @@ export function FormA(props: FormAProps) {
 
   const validateCuisine = (value: string[]): boolean => {
     const requiredValue = 'South Asian';
-    if (value.length !== 2) {
+    if (value.length < 2) {
       setCuisineValid(false);
       return false;
     }
@@ -208,7 +208,7 @@ export function FormA(props: FormAProps) {
             <Option>Gluten-free</Option>
           </Dropdown>
           {submitted && !dietaryValid ?
-            <div className={styles.error} role="alert" id="dietary-error">Please add "Low cholesterol" as a dietary concern.</div>
+            <div className={styles.error} role="alert" id="dietary-error">Please add "Low cholesterol" and one other option as a dietary concern.</div>
           : null}
         </div>
 
