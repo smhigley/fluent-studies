@@ -25,6 +25,9 @@ const useFormStyles = makeStyles({
     display: 'block',
     fontSize: '1.25em',
   },
+  listbox: {
+    maxHeight: '300px',
+  },
   field: {
     display: 'flex',
     flexDirection: 'column',
@@ -62,42 +65,48 @@ export function FormB(props: FormBProps) {
   const [ingredientValid, setIngredientValid] = React.useState(false);
   const [dietaryValid, setDietaryValid] = React.useState(false);
   const [authorValid, setAuthorValid] = React.useState(false);
+  const [formValid, setFormValid] = React.useState(false);
 
   const validateCuisine = (value: string[]) => {
     const requiredValue = 'South Asian';
     if (value.length !== 2) {
-      return setCuisineValid(false);
+      setCuisineValid(false);
+      return false;
     }
 
     const valid = value.includes(requiredValue);
 
     setCuisineValid(valid);
+    return valid;
   }
 
   const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    setMealValid(meal === 'Dinner');
-    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1);
-    setDietaryValid(dietary.includes('Low cholesterol'));
-    setAuthorValid(author === 'Amy Smith');
-    validateCuisine(cuisine);
-    setSubmitted(true);
-  }
+    const mealValid = meal === 'Dinner';
+    const cuisineValid = validateCuisine(cuisine);
+    const ingredientValid = !!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1;
+    const dietaryValid = dietary.length > 1 && dietary.includes('Low cholesterol');
+    const authorValid = author === 'Amy Smith';
+    const formValid = mealValid && cuisineValid && ingredientValid && dietaryValid && authorValid;
 
-  const checkFormValid = () => {
-    return submitted && mealValid && cuisineValid && ingredientValid && dietaryValid && authorValid;
+    setMealValid(mealValid);
+    setIngredientValid(ingredientValid);
+    setDietaryValid(dietaryValid);
+    setAuthorValid(authorValid);
+    setFormValid(formValid);
+    setSubmitted(true);
   }
 
   return (
     <>
-    {!checkFormValid() ?
+    {!formValid ?
       <form noValidate className={styles.form} onSubmit={onSubmit}>
         <Text size={800} as="h1">Find a Recipe (Dinner)</Text>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="meal">Meal or course</label>
-          <DropdownSingleB id="meal" aria-describedby="meal-error" onOptionSelect={(ev, data) => {
+          <DropdownSingleB id="meal" aria-describedby="meal-error" root={{ 'aria-owns': 'meal-listbox' }} listbox={{ id: 'meal-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setMeal(data.optionValue);
             setMealValid(data.optionValue === 'Dinner');
           }}>
@@ -116,7 +125,7 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <ComboboxMultiB autoComplete="off" id="cuisine" multiselect onOptionSelect={(ev, data) => {
+          <ComboboxMultiB autoComplete="off" id="cuisine" multiselect root={{ 'aria-owns': 'cuisine-listbox' }} listbox={{ id: 'cuisine-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>
@@ -168,7 +177,7 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="ingredient">Main ingredient</label>
-          <ComboboxFreeformB autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform onChange={(ev) => {
+          <ComboboxFreeformB autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform root={{ 'aria-owns': 'ingredient-listbox' }} listbox={{ id: 'ingredient-listbox', className: styles.listbox }} onChange={(ev) => {
             setIngredient(ev.target.value);
             setIngredientValid(!!ev.target.value && ev.target.value.toLowerCase().indexOf('tofu') > -1);
           }}>
@@ -187,7 +196,7 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="dietary">Dietary concerns</label>
-          <DropdownMultiB id="dietary" aria-describedby="dietary-error" multiselect onOptionSelect={(ev, data) => {
+          <DropdownMultiB id="dietary" aria-describedby="dietary-error" multiselect root={{ 'aria-owns': 'dietary-listbox' }} listbox={{ id: 'dietary-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setDietary(data.selectedOptions);
             setDietaryValid(data.selectedOptions.includes('Low cholesterol'));
           }}>
@@ -209,7 +218,7 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="author">Recipe author</label>
-          <ComboboxFreeformB autoComplete="off" id="author" onOptionSelect={(ev, data) => {
+          <ComboboxFreeformB autoComplete="off" id="author" root={{ 'aria-owns': 'author-listbox' }} listbox={{ id: 'author-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setAuthor(data.optionValue);
             setAuthorValid(data.optionValue === 'Amy Smith');
           }}>

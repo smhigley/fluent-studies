@@ -29,9 +29,9 @@ const useComboboxMultiB = (props: ComboboxProps, ref: React.Ref<HTMLInputElement
   const [value, setValue] = React.useState<string | undefined>(props.defaultValue as string);
 
 
-  // Do not use space to select
+  // Do not use space or tab to select
   state.input.onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === ' ') {
+    if (event.key === ' ' || event.key === 'Tab') {
       return;
     }
 

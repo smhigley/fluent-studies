@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Text } from '@fluentui/react-components';
 import { Combobox, Dropdown, Option } from '@fluentui/react-components/unstable';
 import { makeStyles, shorthands } from '@griffel/react';
+import { ComboboxMultiA } from './components/ComboboxMultiA';
 import './App.css';
 
 export interface FormAProps {
@@ -19,6 +20,9 @@ const useFormStyles = makeStyles({
   label: {
     display: 'block',
     fontSize: '1.25em',
+  },
+  listbox: {
+    maxHeight: '300px',
   },
   field: {
     display: 'flex',
@@ -57,42 +61,48 @@ export function FormA(props: FormAProps) {
   const [ingredientValid, setIngredientValid] = React.useState(false);
   const [dietaryValid, setDietaryValid] = React.useState(false);
   const [authorValid, setAuthorValid] = React.useState(false);
+  const [formValid, setFormValid] = React.useState(false);
 
-  const validateCuisine = (value: string[]) => {
+  const validateCuisine = (value: string[]): boolean => {
     const requiredValue = 'South Asian';
     if (value.length !== 2) {
-      return setCuisineValid(false);
+      setCuisineValid(false);
+      return false;
     }
 
     const valid = value.includes(requiredValue);
 
     setCuisineValid(valid);
+    return valid;
   }
 
   const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    setMealValid(meal === 'Lunch');
-    validateCuisine(cuisine);
-    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1);
-    setDietaryValid(dietary.includes('Low cholesterol'));
-    setAuthorValid(author === 'Amy Smith');
-    setSubmitted(true);
-  }
+    const mealValid = meal === 'Lunch';
+    const cuisineValid = validateCuisine(cuisine);
+    const ingredientValid = !!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1;
+    const dietaryValid = dietary.length > 1 && dietary.includes('Low cholesterol');
+    const authorValid = author === 'Amy Smith';
+    const formValid = mealValid && cuisineValid && ingredientValid && dietaryValid && authorValid;
 
-  const checkFormValid = () => {
-    return submitted && mealValid && cuisineValid && ingredientValid && dietaryValid && authorValid;
+    setMealValid(mealValid);
+    setIngredientValid(ingredientValid);
+    setDietaryValid(dietaryValid);
+    setAuthorValid(authorValid);
+    setFormValid(formValid);
+    setSubmitted(true);
   }
 
   return (
     <>
-    {!checkFormValid() ?
+    {!formValid ?
       <form noValidate className={styles.form} onSubmit={onSubmit}>
         <Text size={800} as="h1">Find a Recipe (Lunch)</Text>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="meal">Meal or course</label>
-          <Dropdown id="meal" aria-describedby="meal-error" onOptionSelect={(ev, data) => {
+          <Dropdown id="meal" aria-describedby="meal-error" root={{ 'aria-owns': 'meal-listbox' }} listbox={{ id: 'meal-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setMeal(data.optionValue);
             setMealValid(data.optionValue === 'Lunch');
           }}>
@@ -111,7 +121,7 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <Combobox autoComplete="off" id="cuisine" multiselect onOptionSelect={(ev, data) => {
+          <ComboboxMultiA autoComplete="off" id="cuisine" multiselect root={{ 'aria-owns': 'cuisine-listbox' }} listbox={{ id: 'cuisine-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>
@@ -155,7 +165,7 @@ export function FormA(props: FormAProps) {
             <Option>Thai</Option>
             <Option>Turkish</Option>
             <Option>Vietnamese</Option>
-          </Combobox>
+          </ComboboxMultiA>
           {submitted && !cuisineValid ?
             <div className={styles.error} role="alert" id="cuisine-error">Please choose South Asian and one other cuisine.</div>
           : null}
@@ -163,7 +173,7 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="ingredient">Main ingredient</label>
-          <Combobox autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform onChange={(ev) => {
+          <Combobox autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform root={{ 'aria-owns': 'ingredient-listbox' }} listbox={{ id: 'ingredient-listbox', className: styles.listbox }} onChange={(ev) => {
             setIngredient(ev.target.value);
             setIngredientValid(!!ev.target.value && ev.target.value.toLowerCase().indexOf('tofu') > -1);
           }}>
@@ -182,9 +192,9 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="dietary">Dietary concerns</label>
-          <Dropdown id="dietary" aria-describedby="dietary-error" multiselect onOptionSelect={(ev, data) => {
+          <Dropdown id="dietary" aria-describedby="dietary-error" multiselect root={{ 'aria-owns': 'dietary-listbox' }} listbox={{ id: 'dietary-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setDietary(data.selectedOptions);
-            setDietaryValid(data.selectedOptions.includes('Low cholesterol'));
+            setDietaryValid(data.selectedOptions.length > 1 && data.selectedOptions.includes('Low cholesterol'));
           }}>
             <Option>High fiber</Option>
             <Option>Kosher</Option>
@@ -204,7 +214,7 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="author">Recipe author</label>
-          <Combobox autoComplete="off" id="author" onOptionSelect={(ev, data) => {
+          <Combobox autoComplete="off" id="author" root={{ 'aria-owns': 'author-listbox' }} listbox={{ id: 'author-listbox', className: styles.listbox }} onOptionSelect={(ev, data) => {
             setAuthor(data.optionValue);
             setAuthorValid(data.optionValue === 'Amy Smith');
           }}>
