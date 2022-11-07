@@ -59,30 +59,25 @@ export function FormA(props: FormAProps) {
   const [authorValid, setAuthorValid] = React.useState(false);
 
   const validateCuisine = (value: string[]) => {
-    const validValues = ['chinese', 'french', 'south asian'];
-    if (value.length !== 3) {
+    const requiredValue = 'South Asian';
+    if (value.length !== 2) {
       return setCuisineValid(false);
     }
 
-    let valid = true;
-  
-    for (const cuisine of value) {
-      if (!validValues.includes(cuisine.toLowerCase())) {
-        valid = false;
-      }
-    }
+    const valid = value.includes(requiredValue);
 
     setCuisineValid(valid);
   }
 
-  const onSubmit = (ev: React.FormEvent) => {
-    setMealValid(meal === 'Dinner');
-    validateCuisine(cuisine);
-    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('chicken') > -1);
-    setDietaryValid(dietary.includes('Low cholesterol'));
-    setAuthorValid(author === 'Amanda Brady');
-    setSubmitted(true);
+  const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
+
+    setMealValid(meal === 'Lunch');
+    validateCuisine(cuisine);
+    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1);
+    setDietaryValid(dietary.includes('Low cholesterol'));
+    setAuthorValid(author === 'Amy Smith');
+    setSubmitted(true);
   }
 
   const checkFormValid = () => {
@@ -99,7 +94,7 @@ export function FormA(props: FormAProps) {
           <label className={styles.label} htmlFor="meal">Meal or course</label>
           <Dropdown id="meal" aria-describedby="meal-error" onOptionSelect={(ev, data) => {
             setMeal(data.optionValue);
-            setMealValid(data.optionValue === 'Dinner');
+            setMealValid(data.optionValue === 'Lunch');
           }}>
             <Option>Breakfast</Option>
             <Option>Dinner</Option>
@@ -110,39 +105,67 @@ export function FormA(props: FormAProps) {
             <Option>Snack</Option>
           </Dropdown>
           {submitted && !mealValid ?
-            <div className={styles.error} role="alert" id="meal-error">Please select "Dinner" as the meal or course.</div>
+            <div className={styles.error} role="alert" id="meal-error">Please select "Lunch" as the meal or course.</div>
           : null}
         </div>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <Combobox id="cuisine" multiselect onOptionSelect={(ev, data) => {
+          <Combobox autoComplete="off" id="cuisine" multiselect onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>
             <Option>African</Option>
             <Option>American</Option>
+            <Option>Asian</Option>
             <Option>British</Option>
             <Option>Cajun/Creole</Option>
+            <Option>Californian</Option>
             <Option>Caribbean</Option>
+            <Option>Central/South American</Option>
             <Option>Chinese</Option>
             <Option>Cuban</Option>
             <Option>Eastern European</Option>
+            <Option>English</Option>
+            <Option>European</Option>
             <Option>French</Option>
             <Option>German</Option>
+            <Option>Greek</Option>
+            <Option>Indian</Option>
+            <Option>Irish</Option>
+            <Option>Italian</Option>
+            <Option>Italian American</Option>
+            <Option>Japanese</Option>
+            <Option>Jewish</Option>
+            <Option>Korean</Option>
+            <Option>Latin American</Option>
+            <Option>Mediterranean</Option>
+            <Option>Mexican</Option>
+            <Option>Middle Eastern</Option>
+            <Option>Moroccan</Option>
+            <Option>Nuevo Latino</Option>
+            <Option>Scandinavian</Option>
             <Option>South American</Option>
             <Option>South Asian</Option>
+            <Option>Southeast Asian</Option>
+            <Option>Southern</Option>
+            <Option>Southwestern</Option>
+            <Option>Spanish/Portuguese</Option>
+            <Option>Tex-Mex</Option>
+            <Option>Thai</Option>
+            <Option>Turkish</Option>
+            <Option>Vietnamese</Option>
           </Combobox>
           {submitted && !cuisineValid ?
-            <div className={styles.error} role="alert" id="cuisine-error">Please choose Chinese, and two other cuisines.</div>
+            <div className={styles.error} role="alert" id="cuisine-error">Please choose South Asian and one other cuisine.</div>
           : null}
         </div>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="ingredient">Main ingredient</label>
-          <Combobox id="ingredient" aria-describedby="ingredient-error" freeform onOptionSelect={(ev, data) => {
-            setIngredient(data.optionValue);
-            setIngredientValid(!!data.optionValue && data.optionValue.toLowerCase().indexOf('chicken') > -1);
+          <Combobox autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform onChange={(ev) => {
+            setIngredient(ev.target.value);
+            setIngredientValid(!!ev.target.value && ev.target.value.toLowerCase().indexOf('tofu') > -1);
           }}>
             <Option>Beef</Option>
             <Option>Broccoli</Option>
@@ -181,12 +204,13 @@ export function FormA(props: FormAProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="author">Recipe author</label>
-          <Combobox id="author" onOptionSelect={(ev, data) => {
+          <Combobox autoComplete="off" id="author" onOptionSelect={(ev, data) => {
             setAuthor(data.optionValue);
-            setAuthorValid(data.optionValue === 'Amanda Brady');
+            setAuthorValid(data.optionValue === 'Amy Smith');
           }}>
             <Option>Allan Munger</Option>
             <Option>Amanda Brady</Option>
+            <Option>Amy Huang</Option>
             <Option>Amy Smith</Option>
             <Option>Babak Shammas</Option>
             <Option>Beth Davies</Option>
@@ -198,12 +222,13 @@ export function FormA(props: FormAProps) {
             <Option>Colin Ballinger</Option>
           </Combobox>
           {submitted && !authorValid ?
-            <div className={styles.error} role="alert" id="author-error">Please choose "Amanda Brady" as the recipe author.</div>
+            <div className={styles.error} role="alert" id="author-error">Please choose "Amy Smith" as the recipe author.</div>
           : null}
         </div>
 
         <div className={styles.field}>
           <Button appearance='primary' type='submit'>Search</Button>
+          {props.showNextForm ? <Button type='button' onClick={() => props.onFormSubmit()}>Skip to dinner form</Button> : null}
         </div>
       </form>
     : // if the form is submitted and valid, show the success message

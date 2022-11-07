@@ -57,7 +57,10 @@ const useComboboxMultiB = (props: ComboboxProps, ref: React.Ref<HTMLInputElement
 
   // clear input value after selecting an option
   React.useEffect(() => {
-    setValue('');
+    if (open) {
+      setValue('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOptions]);
 
   state.input.value = value ?? calculatedValue;

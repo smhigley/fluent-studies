@@ -64,27 +64,23 @@ export function FormB(props: FormBProps) {
   const [authorValid, setAuthorValid] = React.useState(false);
 
   const validateCuisine = (value: string[]) => {
-    const validValues = ['chinese', 'french', 'south asian'];
-    if (value.length !== 3) {
+    const requiredValue = 'South Asian';
+    if (value.length !== 2) {
       return setCuisineValid(false);
     }
 
-    let valid = true;
-  
-    for (const cuisine of value) {
-      if (!validValues.includes(cuisine.toLowerCase())) {
-        valid = false;
-      }
-    }
+    const valid = value.includes(requiredValue);
 
     setCuisineValid(valid);
   }
 
-  const onSubmit = () => {
+  const onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+
     setMealValid(meal === 'Dinner');
-    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('chicken') > -1);
+    setIngredientValid(!!ingredient && ingredient.toLowerCase().indexOf('tofu') > -1);
     setDietaryValid(dietary.includes('Low cholesterol'));
-    setAuthorValid(author === 'Amanda Brady');
+    setAuthorValid(author === 'Amy Smith');
     validateCuisine(cuisine);
     setSubmitted(true);
   }
@@ -100,7 +96,7 @@ export function FormB(props: FormBProps) {
         <Text size={800} as="h1">Find a Recipe (Dinner)</Text>
 
         <div className={styles.field}>
-          <label htmlFor="meal">Meal or course</label>
+          <label className={styles.label} htmlFor="meal">Meal or course</label>
           <DropdownSingleB id="meal" aria-describedby="meal-error" onOptionSelect={(ev, data) => {
             setMeal(data.optionValue);
             setMealValid(data.optionValue === 'Dinner');
@@ -120,33 +116,61 @@ export function FormB(props: FormBProps) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cuisine">Cuisine</label>
-          <ComboboxMultiB id="cuisine" multiselect onOptionSelect={(ev, data) => {
+          <ComboboxMultiB autoComplete="off" id="cuisine" multiselect onOptionSelect={(ev, data) => {
             setCuisine(data.selectedOptions);
             validateCuisine(data.selectedOptions);
           }}>
-            <Option>African</Option>
-            <Option>American</Option>
-            <Option>British</Option>
-            <Option>Cajun/Creole</Option>
-            <Option>Caribbean</Option>
-            <Option>Chinese</Option>
-            <Option>Cuban</Option>
-            <Option>Eastern European</Option>
-            <Option>French</Option>
-            <Option>German</Option>
-            <Option>South American</Option>
-            <Option>South Asian</Option>
+            <OptionMultiB>African</OptionMultiB>
+            <OptionMultiB>American</OptionMultiB>
+            <OptionMultiB>Asian</OptionMultiB>
+            <OptionMultiB>British</OptionMultiB>
+            <OptionMultiB>Cajun/Creole</OptionMultiB>
+            <OptionMultiB>Californian</OptionMultiB>
+            <OptionMultiB>Caribbean</OptionMultiB>
+            <OptionMultiB>Central/South American</OptionMultiB>
+            <OptionMultiB>Chinese</OptionMultiB>
+            <OptionMultiB>Cuban</OptionMultiB>
+            <OptionMultiB>Eastern European</OptionMultiB>
+            <OptionMultiB>English</OptionMultiB>
+            <OptionMultiB>European</OptionMultiB>
+            <OptionMultiB>French</OptionMultiB>
+            <OptionMultiB>German</OptionMultiB>
+            <OptionMultiB>Greek</OptionMultiB>
+            <OptionMultiB>Indian</OptionMultiB>
+            <OptionMultiB>Irish</OptionMultiB>
+            <OptionMultiB>Italian</OptionMultiB>
+            <OptionMultiB>Italian American</OptionMultiB>
+            <OptionMultiB>Japanese</OptionMultiB>
+            <OptionMultiB>Jewish</OptionMultiB>
+            <OptionMultiB>Korean</OptionMultiB>
+            <OptionMultiB>Latin American</OptionMultiB>
+            <OptionMultiB>Mediterranean</OptionMultiB>
+            <OptionMultiB>Mexican</OptionMultiB>
+            <OptionMultiB>Middle Eastern</OptionMultiB>
+            <OptionMultiB>Moroccan</OptionMultiB>
+            <OptionMultiB>Nuevo Latino</OptionMultiB>
+            <OptionMultiB>Scandinavian</OptionMultiB>
+            <OptionMultiB>South American</OptionMultiB>
+            <OptionMultiB>South Asian</OptionMultiB>
+            <OptionMultiB>Southeast Asian</OptionMultiB>
+            <OptionMultiB>Southern</OptionMultiB>
+            <OptionMultiB>Southwestern</OptionMultiB>
+            <OptionMultiB>Spanish/Portuguese</OptionMultiB>
+            <OptionMultiB>Tex-Mex</OptionMultiB>
+            <OptionMultiB>Thai</OptionMultiB>
+            <OptionMultiB>Turkish</OptionMultiB>
+            <OptionMultiB>Vietnamese</OptionMultiB>
           </ComboboxMultiB>
           {submitted && !cuisineValid ?
-            <div className={styles.error} role="alert" id="cuisine-error">Please choose Chinese, French, and South Asian as cuisines.</div>
+            <div className={styles.error} role="alert" id="cuisine-error">Please choose South Asian and one other cuisine.</div>
           : null}
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="ingredient">Main ingredient</label>
-          <ComboboxFreeformB id="ingredient" aria-describedby="ingredient-error" freeform onOptionSelect={(ev, data) => {
-            setIngredient(data.optionValue);
-            setIngredientValid(!!data.optionValue && data.optionValue.toLowerCase().indexOf('chicken') > -1);
+          <label className={styles.label} htmlFor="ingredient">Main ingredient</label>
+          <ComboboxFreeformB autoComplete="off" id="ingredient" aria-describedby="ingredient-error" freeform onChange={(ev) => {
+            setIngredient(ev.target.value);
+            setIngredientValid(!!ev.target.value && ev.target.value.toLowerCase().indexOf('tofu') > -1);
           }}>
             <Option>Beef</Option>
             <Option>Broccoli</Option>
@@ -157,12 +181,12 @@ export function FormB(props: FormBProps) {
             <Option>Chicken</Option>
           </ComboboxFreeformB>
           {submitted && !ingredientValid ?
-            <div className={styles.error} role="alert" id="ingredient-error">Please add "Chicken" as the desired ingredient.</div>
+            <div className={styles.error} role="alert" id="ingredient-error">Please enter "Tofu" as the desired ingredient.</div>
           : null}
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="dietary">Dietary concerns</label>
+          <label className={styles.label} htmlFor="dietary">Dietary concerns</label>
           <DropdownMultiB id="dietary" aria-describedby="dietary-error" multiselect onOptionSelect={(ev, data) => {
             setDietary(data.selectedOptions);
             setDietaryValid(data.selectedOptions.includes('Low cholesterol'));
@@ -184,13 +208,14 @@ export function FormB(props: FormBProps) {
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="author">Recipe author</label>
-          <ComboboxFreeformB id="author" onOptionSelect={(ev, data) => {
+          <label className={styles.label} htmlFor="author">Recipe author</label>
+          <ComboboxFreeformB autoComplete="off" id="author" onOptionSelect={(ev, data) => {
             setAuthor(data.optionValue);
-            setAuthorValid(data.optionValue === 'Amanda Brady');
+            setAuthorValid(data.optionValue === 'Amy Smith');
           }}>
             <Option>Allan Munger</Option>
             <Option>Amanda Brady</Option>
+            <Option>Amy Huang</Option>
             <Option>Amy Smith</Option>
             <Option>Babak Shammas</Option>
             <Option>Beth Davies</Option>
@@ -202,12 +227,13 @@ export function FormB(props: FormBProps) {
             <Option>Colin Ballinger</Option>
           </ComboboxFreeformB>
           {submitted && !authorValid ?
-            <div className={styles.error} role="alert" id="author-error">Please choose "Amanda Brady" as the recipe author.</div>
+            <div className={styles.error} role="alert" id="author-error">Please choose "Amy Smith" as the recipe author.</div>
           : null}
         </div>
 
         <div className={styles.field}>
           <Button appearance='primary' type='submit'>Search</Button>
+          {props.showNextForm ? <Button type='button' onClick={() => props.onFormSubmit()}>Skip to lunch form</Button> : null}
         </div>
       </form>
     : // if the form is submitted and valid, show the success message
