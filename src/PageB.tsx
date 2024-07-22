@@ -465,7 +465,7 @@ const OrderDialog = (props: Omit<DialogProps, 'children'> & { columnId: string |
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogSurface>
         <DialogBody>
-          <DialogTitle>Change width for {columnData[columnId].label}</DialogTitle>
+          <DialogTitle>Change order for {columnData[columnId].label}</DialogTitle>
           <DialogContent>
           <Field label="New column index">
           <Select defaultValue={columnIndex + 1} onChange={(ev) => setNewIndex(parseInt(ev.target.value) - 1)}>
