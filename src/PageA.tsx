@@ -74,6 +74,15 @@ type Item = {
 
 const items: Item[] = [
   {
+    file: { label: "Aerial video of the Grand Canyon", icon: <VideoRegular /> },
+    author: { label: "Casey Frye", status: "offline" },
+    lastUpdated: { label: "12h ago", timestamp: 1 },
+    lastUpdate: {
+      label: "You recently viewed this",
+      icon: <OpenRegular />,
+    },
+  },
+  {
     file: { label: "Meeting notes", icon: <DocumentRegular /> },
     author: { label: "Max Mustermann", status: "available" },
     lastUpdated: { label: "7h ago", timestamp: 1 },
@@ -106,6 +115,52 @@ const items: Item[] = [
     lastUpdated: { label: "Tue at 9:30 AM", timestamp: 3 },
     lastUpdate: {
       label: "You shared this in a Teams chat",
+      icon: <PeopleRegular />,
+    },
+  },
+
+  {
+    file: { label: "Market Research", icon: <DocumentRegular /> },
+    author: { label: "Alice Bernhardt", status: "busy" },
+    lastUpdated: { label: "June 13 at 12:10 AM", timestamp: 3 },
+    lastUpdate: {
+      label: "This was shared with you",
+      icon: <PeopleRegular />,
+    },
+  },
+  {
+    file: { label: "Monday standup meeting notes", icon: <VideoRegular /> },
+    author: { label: "Caroline Tate-Valdez", status: "offline" },
+    lastUpdated: { label: "Mon at 9:00 AM", timestamp: 3 },
+    lastUpdate: {
+      label: "You shared this in a Teams chat",
+      icon: <PeopleRegular />,
+    },
+  },
+  {
+    file: { label: "Research on cat behavior", icon: <DocumentPdfRegular /> },
+    author: { label: "Eliza May Finley", status: "available" },
+    lastUpdated: { label: "Fri at 3:15 PM", timestamp: 3 },
+    lastUpdate: {
+      label: "You recently opened this",
+      icon: <OpenRegular />,
+    },
+  },
+  {
+    file: { label: "Project brainstorming on new FY25 objectives", icon: <FolderRegular /> },
+    author: { label: "Michael Sanchez", status: "away" },
+    lastUpdated: { label: "Wed at 3:40 PM", timestamp: 3 },
+    lastUpdate: {
+      label: "This was shared with you in a Teams chat",
+      icon: <PeopleRegular />,
+    },
+  },
+  {
+    file: { label: "Project brainstorming on new FY25 objectives -- final", icon: <FolderRegular /> },
+    author: { label: "Michael Sanchez", status: "away" },
+    lastUpdated: { label: "Thurs at 9:10 AM", timestamp: 3 },
+    lastUpdate: {
+      label: "This was shared with you in a Teams chat",
       icon: <PeopleRegular />,
     },
   },
