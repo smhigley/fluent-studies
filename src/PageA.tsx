@@ -43,6 +43,7 @@ import {
 import type {
   DataGridProps,
   DialogProps,
+  TableRowId
 } from "@fluentui/react-components";
 
 type FileCell = {
@@ -266,6 +267,9 @@ export const PageA = () => {
   const { announce } = useAnnounce();
   const refMap = React.useRef<Record<string, HTMLElement | null>>({});
 
+  const [selectedFiles, setSelectedFiles] = React.useState(
+    new Set<TableRowId>([1])
+  );
   const [orderedColumns, setOrderedColumns] = React.useState(columns);
   const [columnSizingOptions, setColumnSizingOptions] = React.useState<TableColumnSizingOptions>(columnData);
   const [resizeOpen, setResizeOpen] = React.useState(false);
@@ -344,6 +348,17 @@ export const PageA = () => {
     announce(`resized ${columnData[columnId].label} to ${width}px`);
   }
 
+  const onSelectionChange: DataGridProps["onSelectionChange"] = (e, data) => {
+    console.log(data.selectedItems.values());
+    setSelectedFiles(data.selectedItems)
+  };
+
+  const onDeleteClick = () => {
+    const fileNames: string[] = [];
+    selectedFiles.forEach((f) => fileNames.push(`${f}`));
+    alert('Deleted the following files: ' + fileNames.join(', ') + '.');
+  }
+
   return (
     <>
     <h1>Recent files (A)</h1>
@@ -358,6 +373,7 @@ export const PageA = () => {
         resizableColumns
         columnSizingOptions={columnSizingOptions}
         onColumnResize={onColumnResize}
+        onSelectionChange={onSelectionChange}
       >
         <DataGridHeader>
           <DataGridRow
@@ -410,6 +426,7 @@ export const PageA = () => {
           )}
         </DataGridBody>
       </DataGrid>
+      <Button onClick={onDeleteClick} style={{ marginTop: '1em' }}>Delete files</Button>
       <ResizeDialog open={resizeOpen} onOpenChange={(_, data: { open: boolean }) => setResizeOpen(data.open)} columnId={currentResizeId} columnWidth={columnSizingOptions[currentResizeId].idealWidth} onResize={(width) => updateColumnSizing(currentResizeId, width)} />
       <OrderDialog open={orderOpen} onOpenChange={(_, data: { open: boolean }) => setOrderOpen(data.open)} columnId={currentOrderId} columnIndex={getColumnOrder(currentOrderId)} onOrder={(newIndex) => updateColumnOrder(currentOrderId, newIndex)} />
     </div>
@@ -422,6 +439,13 @@ const ResizeDialog = (props: Omit<DialogProps, 'children'> & { columnId: string 
 
   const [newWidth, setNewWidth] = React.useState(columnWidth);
 
+  const onInputKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+    if (ev.key === 'Enter') {
+      onResize(parseInt((ev.target as HTMLInputElement).value));
+      onOpenChange?.(ev, { type: 'escapeKeyDown', open: false, event: ev });
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogSurface>
@@ -432,7 +456,8 @@ const ResizeDialog = (props: Omit<DialogProps, 'children'> & { columnId: string 
             <SpinButton
               id={'resize'}
               defaultValue={newWidth}
-              onChange={(_, data) => { console.log(data); setNewWidth(data.value || parseInt(data.displayValue || '100'))}}
+              onChange={(_, data) => { setNewWidth(data.value || parseInt(data.displayValue || '100'))}}
+              onKeyDown={onInputKeyDown}
               min={50}
               max={500}
             />

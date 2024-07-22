@@ -42,6 +42,7 @@ import {
 import type {
   DataGridProps,
   DialogProps,
+  TableRowId,
 } from "@fluentui/react-components";
 
 type FileCell = {
@@ -266,6 +267,9 @@ export const PageB = () => {
   const refMap = React.useRef<Record<string, HTMLElement | null>>({});
   const keyboardSortTracking = React.useRef(false);
 
+  const [selectedFiles, setSelectedFiles] = React.useState(
+    new Set<TableRowId>([1])
+  );
   const [orderedColumns, setOrderedColumns] = React.useState(columns);
   const [columnSizingOptions, setColumnSizingOptions] = React.useState<TableColumnSizingOptions>(columnData);
   const [orderOpen, setOrderOpen] = React.useState(false);
@@ -363,6 +367,16 @@ export const PageB = () => {
     ev.preventDefault();
   }
 
+  const onSelectionChange: DataGridProps["onSelectionChange"] = (e, data) => {
+    setSelectedFiles(data.selectedItems)
+  };
+
+  const onDeleteClick = () => {
+    const fileNames: string[] = [];
+    selectedFiles.forEach((f) => fileNames.push(`${f}`));
+    alert('Deleted the following files: ' + fileNames.join(', ') + '.');
+  }
+
   return (
     <>
     <h1>Recent files (B)</h1>
@@ -377,6 +391,7 @@ export const PageB = () => {
         resizableColumns
         columnSizingOptions={columnSizingOptions}
         onColumnResize={onColumnResize}
+        onSelectionChange={onSelectionChange}
       >
         <DataGridHeader>
           <DataGridRow
@@ -434,6 +449,7 @@ export const PageB = () => {
           )}
         </DataGridBody>
       </DataGrid>
+      <Button onClick={onDeleteClick} style={{ marginTop: '1em' }}>Delete files</Button>
       <OrderDialog open={orderOpen} onOpenChange={(_, data: { open: boolean }) => setOrderOpen(data.open)} columnId={currentOrderId} columnIndex={getColumnOrder(currentOrderId)} onOrder={(newIndex) => updateColumnOrder(currentOrderId, newIndex)} />
     </div>
     </>
