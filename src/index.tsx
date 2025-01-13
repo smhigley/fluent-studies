@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { FluentProvider, webLightTheme, AriaLiveAnnouncer } from '@fluentui/react-components';
-import './index.css';
+import './base.css';
 import App from './App';
-import { PageA } from './PageA';
-import { PageB } from './PageB';
+import GridApp from './studies/grid-study/GridStudy';
+import { PageA } from './studies/grid-study/PageA';
+import { PageB } from './studies/grid-study/PageB';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -14,11 +15,15 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/pageA",
+    path: "/grid-study",
+    element: <GridApp />,
+  },
+  {
+    path: "/grid-study/pageA",
     element: <PageA />,
   },
   {
-    path: "/pageB",
+    path: "/grid-study/pageB",
     element: <PageB />,
   },
 ]);
