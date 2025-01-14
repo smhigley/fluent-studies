@@ -7,6 +7,9 @@ import App from './App';
 import GridApp from './studies/grid-study/GridStudy';
 import { PageA } from './studies/grid-study/PageA';
 import { PageB } from './studies/grid-study/PageB';
+import ListApp from './studies/list-study/ListHome';
+import ListFilesPage from './studies/list-study/FilesPage';
+import ListPluginsPage from './studies/list-study/PluginsPage';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -25,6 +28,18 @@ const router = createBrowserRouter([
   {
     path: "/grid-study/pageB",
     element: <PageB />,
+  },
+  {
+    path: "/list-study",
+    element: <ListApp />,
+  },
+  {
+    path: "/list-study/files",
+    element: <ListFilesPage />,
+  },
+  {
+    path: "/list-study/plugins",
+    element: <ListPluginsPage />,
   },
 ]);
 
