@@ -9,6 +9,12 @@ import {
   DialogActions,
   DialogContent,
   Field,
+  Menu,
+  MenuTrigger,
+  MenuPopover,
+  MenuList,
+  MenuItem,
+  MenuButton,
   TagPicker,
   TagPickerList,
   TagPickerInput,
@@ -21,6 +27,7 @@ import {
   InteractionTagSecondary,
   useTagPickerFilter,
   Text,
+  useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import type {
   DialogProps,
@@ -34,6 +41,10 @@ const users = [
   "Jane Doe",
   "Max Mustermann",
   "Erika Mustermann",
+  "Elvira Jenkins",
+  "Alice Bernhardt",
+  "Caroline Tate-Valdez",
+  "Eliza May Finley",
   "Pierre Dupont",
   "Amelie Dupont",
   "Mario Rossi",
@@ -59,6 +70,8 @@ const MetadataPage = () => {
   const [tags, setTags] = React.useState<string[]>(initialTags);
   const [selectedTags, setSelectedTags] = React.useState<string[]>(initialTags);
   const [tagQuery, setTagQuery] = React.useState<string>("");
+
+  const restoreFocusTargetAttribute = useRestoreFocusTarget();
 
   const onUserSelect: TagPickerProps["onOptionSelect"] = (e, data) => {
     if (data.value === "no-matches") {
@@ -190,6 +203,7 @@ const MetadataPage = () => {
                     onClick={() => onTagClick(option)}
                     media={<Avatar aria-hidden name={option} color="colorful" />}
                     role="option"
+                    {...restoreFocusTargetAttribute}
                   >
                     {option}
                   </InteractionTagPrimary>
@@ -222,6 +236,7 @@ const MetadataPage = () => {
                       hasSecondaryAction
                       onClick={() => onTagClick(option)}
                       role="gridcell"
+                      {...restoreFocusTargetAttribute}
                     >
                       {option}
                     </InteractionTagPrimary>
@@ -253,6 +268,7 @@ const MetadataPage = () => {
                   <InteractionTagPrimary
                     hasSecondaryAction
                     onClick={() => onTagClick(option)}
+                    {...restoreFocusTargetAttribute}
                   >
                     {option}
                   </InteractionTagPrimary>

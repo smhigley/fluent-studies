@@ -230,7 +230,7 @@ const PluginsPage = () => {
       <Toolbar aria-label="plugin actions" size="large">
         <ToolbarButton onClick={() => setSelectedFiles(items.map(i => i.id))} disabledFocusable={selectedFiles.length === items.length}>Select All</ToolbarButton>
         <ToolbarButton onClick={() => setSelectedFiles([])} disabledFocusable={selectedFiles.length === 0}>Unselect All</ToolbarButton>
-        <ToolbarButton onClick={() => { setFilesToDelete(selectedFiles); setConfOpen(true); }} disabled={selectedFiles.length === 0}>Delete selected plugins</ToolbarButton>
+        <ToolbarButton onClick={() => { setFilesToDelete(selectedFiles); setConfOpen(true); }} disabledFocusable={selectedFiles.length === 0}>Delete selected plugins</ToolbarButton>
       </Toolbar>
 
       <List aria-label="plugins" role="list" className="list" selectionMode="multiselect" selectedItems={selectedFiles} onSelectionChange={(_, data) => setSelectedFiles(data.selectedItems)}>

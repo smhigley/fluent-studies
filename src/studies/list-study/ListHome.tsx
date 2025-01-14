@@ -15,6 +15,7 @@ import {
   Text,
   Toolbar,
   ToolbarButton,
+  useRestoreFocusTarget,
 } from "@fluentui/react-components";
 
 import type {
@@ -146,6 +147,8 @@ const ListHome = () => {
     setSelectedUsers([]);
   };
 
+  const restoreFocusTargetAttribute = useRestoreFocusTarget();
+
   return (
     <>
       <Header />
@@ -156,7 +159,7 @@ const ListHome = () => {
       <Text as="h3" size={600}>Manage uploaded images</Text>
       <Toolbar aria-label="image actions" size="large">
         <ToolbarButton onClick={() => setSelectedImages([])} disabledFocusable={selectedImages.length === 0}>Unselect all</ToolbarButton>
-        <ToolbarButton onClick={() => { setConfOpen(true); }} disabled={selectedImages.length === 0}>Delete selected images</ToolbarButton>
+        <ToolbarButton {...restoreFocusTargetAttribute} onClick={() => { setConfOpen(true); }} disabledFocusable={selectedImages.length === 0}>Delete selected images</ToolbarButton>
       </Toolbar>
 
       <List
@@ -184,7 +187,7 @@ const ListHome = () => {
       <Text as="h3" size={600}>Manage users</Text>
       <Toolbar aria-label="user actions" size="large">
         <ToolbarButton onClick={() => setSelectedUsers([])} disabledFocusable={selectedUsers.length === 0}>Unselect all</ToolbarButton>
-        <ToolbarButton onClick={() => { setUserOpen(true); }} disabled={selectedUsers.length === 0}>Remove selected users</ToolbarButton>
+        <ToolbarButton {...restoreFocusTargetAttribute} onClick={() => { setUserOpen(true); }} disabledFocusable={selectedUsers.length === 0}>Remove selected users</ToolbarButton>
       </Toolbar>
 
       <List

@@ -27,7 +27,7 @@ import {
   mergeClasses,
   Text,
   Toolbar,
-  ToolbarButton
+  ToolbarButton,
 } from "@fluentui/react-components";
 
 import type {
@@ -284,7 +284,7 @@ const FilesPage = () => {
       <Toolbar aria-label="file actions" size="large">
         <ToolbarButton onClick={() => setSelectedFiles(items.map(i => i.id))} disabledFocusable={selectedFiles.length === items.length}>Select All</ToolbarButton>
         <ToolbarButton onClick={() => setSelectedFiles([])} disabledFocusable={selectedFiles.length === 0}>Unselect All</ToolbarButton>
-        <ToolbarButton onClick={() => { setFilesToDelete(selectedFiles); setConfOpen(true); }} disabled={selectedFiles.length === 0}>Delete selected files</ToolbarButton>
+        <ToolbarButton onClick={() => { setFilesToDelete(selectedFiles); setConfOpen(true); }} disabledFocusable={selectedFiles.length === 0}>Delete selected files</ToolbarButton>
       </Toolbar>
 
       <List navigationMode="composite" aria-label="files" className="list" selectionMode="multiselect" selectedItems={selectedFiles} onSelectionChange={(_, data) => setSelectedFiles(data.selectedItems)}>
