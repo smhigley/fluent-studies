@@ -228,7 +228,7 @@ const FilesPage = () => {
       event.preventDefault();
       setActiveFile(props.data);
       setDetailsOpen(true);
-    }, []);
+    }, [props.data]);
   
     return (
       <ListItem

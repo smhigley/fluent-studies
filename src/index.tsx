@@ -10,6 +10,7 @@ import { PageB } from './studies/grid-study/PageB';
 import ListApp from './studies/list-study/ListHome';
 import ListFilesPage from './studies/list-study/FilesPage';
 import ListPluginsPage from './studies/list-study/PluginsPage';
+import ListMetadataPage from './studies/list-study/MetadataPage';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/list-study/plugins",
     element: <ListPluginsPage />,
+  },
+  {
+    path: "/list-study/metadata",
+    element: <ListMetadataPage />,
   },
 ]);
 

@@ -159,7 +159,7 @@ const PluginsPage = () => {
       event.preventDefault();
       setActivePlugin(props.data);
       setDetailsOpen(true);
-    }, []);
+    }, [props.data]);
 
     const selectedString = isCardSelected(id) ? 'selected' : 'not selected';
     const focusAttributes = useFocusableGroup();
